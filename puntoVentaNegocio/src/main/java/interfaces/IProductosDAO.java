@@ -11,4 +11,5 @@ public interface IProductosDAO {
     public List<Producto> consultarProductosPorNombre(String nombreProducto);
     public List<Producto> consultarTodos();
     public boolean actualizarProducto(Producto producto);
+    public void actualizarStock(String codigoProducto, int cantidad);
 }

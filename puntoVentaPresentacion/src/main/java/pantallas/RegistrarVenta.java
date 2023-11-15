@@ -4,9 +4,10 @@ package pantallas;
 import control.ventasControl;
 import entidades.Producto;
 import entidades.VentaProducto;
+import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.PersistenceException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -67,7 +68,6 @@ public class RegistrarVenta extends javax.swing.JFrame {
         txtNombreProducto = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtNumProducto1 = new javax.swing.JTextField();
-        btnEliminarProducto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registrar Venta");
@@ -186,13 +186,6 @@ public class RegistrarVenta extends javax.swing.JFrame {
             }
         });
 
-        btnEliminarProducto.setText("Eliminar Producto");
-        btnEliminarProducto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarProductoActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
@@ -215,10 +208,7 @@ public class RegistrarVenta extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(2, 2, 2)
                         .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelPrincipalLayout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(166, 166, 166)
-                                .addComponent(btnEliminarProducto))
+                            .addComponent(jLabel2)
                             .addGroup(panelPrincipalLayout.createSequentialGroup()
                                 .addComponent(txtPago, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -282,12 +272,9 @@ public class RegistrarVenta extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnVaciar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 22, Short.MAX_VALUE)
-                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelPrincipalLayout.createSequentialGroup()
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2))
-                    .addComponent(btnEliminarProducto))
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -360,11 +347,7 @@ public class RegistrarVenta extends javax.swing.JFrame {
                     return;
                 }
 
-                if (cantidad > productoNuevo.getExistencia()) {
-                    JOptionPane.showMessageDialog(this, "La cantidad solicitada supera el stock disponible para el producto " + productoNuevo.getNombre() + ". Stock disponible: " + (int)productoNuevo.getExistencia());
-                    return;
-                }
-
+                
                 listaProductos = con.agregarProductoVenta(productoNuevo.getCodigo(), cantidad);
                 actualizarPantalla();
             } catch (NumberFormatException e) {
@@ -415,26 +398,12 @@ public class RegistrarVenta extends javax.swing.JFrame {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Deseas realizar la venta?");
 
             if (confirmacion == JOptionPane.OK_OPTION) {
-                boolean ventaRealizada = false;
-                try {
-                    ventaRealizada = con.realizarVenta(montoPago);
-                } catch(PersistenceException e) {
-                    JOptionPane.showMessageDialog(this, "Error con la base de datos.");
-                }
-                
-                if(ventaRealizada) {
-                    JOptionPane.showMessageDialog(this, "Venta realizada exitosamente");
-                    listaProductos.clear();
-                    txtPago.setText("");
-                    txtCambio.setText(" CAMBIO $0.0");
-                    actualizarPantalla();
-                } else {
-                    JOptionPane.showMessageDialog(this, "No se ha podido realizar la venta.");
-                }
-            } else if(confirmacion == JOptionPane.NO_OPTION){
-            
-                JOptionPane.showMessageDialog(this, "Puede Regresar a eliminar un producto si asi lo desea");
-            
+                con.realizarVenta(montoPago);
+                JOptionPane.showMessageDialog(this, "Venta realizada exitosamente");
+                listaProductos.clear();
+                txtPago.setText("");
+                txtCambio.setText(" CAMBIO $0.0");
+                actualizarPantalla();
             } else {
                 JOptionPane.showMessageDialog(this, "La venta fue cancelada");
                 listaProductos.clear();
@@ -474,30 +443,8 @@ public class RegistrarVenta extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCantidadActionPerformed
 
-    private void btnEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProductoActionPerformed
-
-        String nombreProductoEliminar = JOptionPane.showInputDialog("Introduce el nombre del producto a Eliminar");
-        
-               
-        
-                
-        for (int i = 0; i < listaProductos.size() ; i++) {
-            
-            if(nombreProductoEliminar.equals(listaProductos.get(i).getProducto().getNombre())){
-                
-                listaProductos.remove(i);
-                 actualizarPantalla();
-                
-            }
-        }
-        
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEliminarProductoActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnEliminarProducto;
     private javax.swing.JButton btnPagar;
     private javax.swing.JButton btnVaciar;
     private javax.swing.JLabel jLabel2;
