@@ -73,9 +73,7 @@ public class ProductosDAO implements IProductosDAO {
                 JOptionPane.showMessageDialog(null, "El producto" + nombreProducto + " no existe.");
                 return null;
             }else{
-            JOptionPane.showMessageDialog(null, "El producto" + nombreProducto + " sí existe.");
                 return query.getResultList().get(0);
-                
             }
             
         } catch (PersistenceException ex) {
