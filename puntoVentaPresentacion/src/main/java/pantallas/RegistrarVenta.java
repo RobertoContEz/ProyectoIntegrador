@@ -342,6 +342,11 @@ public class RegistrarVenta extends javax.swing.JFrame {
                 return;
             }
 
+            if (productoNuevo.getPrecio() <= 0) {
+                JOptionPane.showMessageDialog(this, "El producto " + productoNuevo.getNombre() + " no tiene un precio válido.");
+                return;
+            }
+
             listaProductos = con.agregarProductoVenta(productoNuevo.getCodigo(), cantidad);
             actualizarPantalla();
         } catch (NumberFormatException e) {
