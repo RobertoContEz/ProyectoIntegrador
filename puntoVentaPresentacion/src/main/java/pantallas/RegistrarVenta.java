@@ -4,8 +4,6 @@ package pantallas;
 import control.ventasControl;
 import entidades.Producto;
 import entidades.VentaProducto;
-import java.awt.event.KeyEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.PersistenceException;

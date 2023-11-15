@@ -5,6 +5,7 @@ import interfaces.IConexionBD;
 import interfaces.IProductosDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.swing.JOptionPane;
 
@@ -36,7 +37,7 @@ public class ProductosDAO implements IProductosDAO {
          EntityManager em =null;
          
         try {
-           em= this.conexion.crearConexion();
+            em= this.conexion.crearConexion();
             String jpqlQuery = "SELECT p FROM Producto p WHERE p.codigo LIKE :codigoProducto";
 
             // OBJETO DE CONSULTA EJECUTABLE
@@ -44,12 +45,13 @@ public class ProductosDAO implements IProductosDAO {
             query.setParameter("codigoProducto",  codigoProducto );
 
             return query.getResultList().get(0);
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "No se pudo acceder a la base de datos.");
+            System.err.println("No se pudo acceder a la base de datos"+ex.getMessage());
+            return null;
         } catch (Exception ex) {
-            
-             JOptionPane.showMessageDialog(null, "No se pudo encontrar el producto introducido ");
-             System.err.println("No se pudo agregar la venta"+ex.getMessage());
-              
-             
+            JOptionPane.showMessageDialog(null, "No se pudo encontrar el producto introducido.");
+            System.err.println("No se pudo agregar la venta"+ex.getMessage());
             return null;
         }
     }
@@ -77,6 +79,10 @@ public class ProductosDAO implements IProductosDAO {
             }
 
             
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(null, "No se pudo acceder a la base de datos.");
+            System.err.println("No se pudo acceder a la base de datos"+ex.getMessage());
+            return null;
         } catch (Exception ex) {
             
              JOptionPane.showMessageDialog(null, "No se pudo conectar a la base de datos ");
