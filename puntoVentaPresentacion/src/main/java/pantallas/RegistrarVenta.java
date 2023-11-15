@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.PersistenceException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -402,12 +403,22 @@ public class RegistrarVenta extends javax.swing.JFrame {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Deseas realizar la venta?");
 
             if (confirmacion == JOptionPane.OK_OPTION) {
-                con.realizarVenta(montoPago);
-                JOptionPane.showMessageDialog(this, "Venta realizada exitosamente");
-                listaProductos.clear();
-                txtPago.setText("");
-                txtCambio.setText(" CAMBIO $0.0");
-                actualizarPantalla();
+                boolean ventaRealizada = false;
+                try {
+                    ventaRealizada = con.realizarVenta(montoPago);
+                } catch(PersistenceException e) {
+                    JOptionPane.showMessageDialog(this, "Error con la base de datos.");
+                }
+                
+                if(ventaRealizada) {
+                    JOptionPane.showMessageDialog(this, "Venta realizada exitosamente");
+                    listaProductos.clear();
+                    txtPago.setText("");
+                    txtCambio.setText(" CAMBIO $0.0");
+                    actualizarPantalla();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se ha podido realizar la venta.");
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "La venta fue cancelada");
                 listaProductos.clear();

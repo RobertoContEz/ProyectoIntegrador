@@ -86,7 +86,7 @@ public class ventasControl {
         return listaCompras;
     }
     
-    public void realizarVenta(float pago){
+    public boolean realizarVenta(float pago){
         Venta venta = new Venta(
                                 new Date(), 
                                 total, 
@@ -96,6 +96,13 @@ public class ventasControl {
         for (VentaProducto listaCompra : listaCompras) {
             listaCompra.setVenta(venta);
         }
-        ventasDAO.agregar(venta);
+        
+        try {
+            ventasDAO.agregar(venta);
+        } catch (Exception e) {
+            System.out.println("Error agregando la venta: "+e);
+            return false;
+        }
+        return true;
     }
 }
