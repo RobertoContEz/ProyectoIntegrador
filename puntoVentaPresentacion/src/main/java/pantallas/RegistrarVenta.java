@@ -308,51 +308,56 @@ public class RegistrarVenta extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // Valida que se añada una cantidad de producto
-    if (txtCantidad.getText().equals("")) {
-        JOptionPane.showMessageDialog(this, "Por favor ingrese una cantidad.");
-    } else {
-        try {
-            int cantidad = Integer.parseInt(txtCantidad.getText());
+        if (txtCantidad.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese una cantidad.");
+        } else {
+            try {
+                int cantidad = Integer.parseInt(txtCantidad.getText());
 
-            // Valida que se añada una cantidad mayor a 0
-            if (cantidad < 1) {
-                txtCantidad.setText("");
-                JOptionPane.showMessageDialog(this, "Por favor ingrese una cantidad positiva o mayor a 0.");
-                return;
-            }
-
-            Producto productoNuevo = null;
-
-            if (!txtNombreProducto.getText().trim().isEmpty()) {
-                productoNuevo = con.buscarProductoPorNombre(txtNombreProducto.getText());
-
-                if (productoNuevo == null) {
-                    JOptionPane.showMessageDialog(this, "El producto " + txtNombreProducto.getText() + " no existe.");
+                // Valida que la cantidad sea un número positivo
+                if (cantidad <= 0) {
+                    txtCantidad.setText("");
+                    JOptionPane.showMessageDialog(this, "Por favor ingrese una cantidad positiva.");
                     return;
                 }
-            } else if (!txtNumProducto1.getText().trim().isEmpty()) {
-                productoNuevo = con.buscarProductoPorNumero(txtNumProducto1.getText());
 
-                if (productoNuevo == null) {
-                    JOptionPane.showMessageDialog(this, "El producto con número " + txtNumProducto1.getText() + " no existe.");
+                Producto productoNuevo = null;
+
+                if (!txtNombreProducto.getText().trim().isEmpty()) {
+                    productoNuevo = con.buscarProductoPorNombre(txtNombreProducto.getText());
+
+                    if (productoNuevo == null) {
+                        JOptionPane.showMessageDialog(this, "El producto " + txtNombreProducto.getText() + " no existe.");
+                        return;
+                    }
+                } else if (!txtNumProducto1.getText().trim().isEmpty()) {
+                    productoNuevo = con.buscarProductoPorNumero(txtNumProducto1.getText());
+
+                    if (productoNuevo == null) {
+                        JOptionPane.showMessageDialog(this, "El producto con número " + txtNumProducto1.getText() + " no existe.");
+                        return;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ingrese el nombre o número del producto.");
                     return;
                 }
-            } else {
-                JOptionPane.showMessageDialog(this, "Ingrese el nombre o número del producto.");
-                return;
-            }
 
-            if (productoNuevo.getPrecio() <= 0) {
-                JOptionPane.showMessageDialog(this, "El producto " + productoNuevo.getNombre() + " no tiene un precio válido.");
-                return;
-            }
+                if (productoNuevo.getPrecio() <= 0) {
+                    JOptionPane.showMessageDialog(this, "El producto " + productoNuevo.getNombre() + " no tiene un precio válido.");
+                    return;
+                }
 
-            listaProductos = con.agregarProductoVenta(productoNuevo.getCodigo(), cantidad);
-            actualizarPantalla();
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Ingrese una cantidad válida (número entero).");
+                if (cantidad > productoNuevo.getStock()) {
+                    JOptionPane.showMessageDialog(this, "La cantidad solicitada supera el stock disponible para el producto " + productoNuevo.getNombre() + ". Stock disponible: " + productoNuevo.getStock());
+                    return;
+                }
+
+                listaProductos = con.agregarProductoVenta(productoNuevo.getCodigo(), cantidad);
+                actualizarPantalla();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Ingrese una cantidad válida (número entero).");
+            }
         }
-    }
             
         actualizarPantalla();
         
@@ -373,35 +378,46 @@ public class RegistrarVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_volverBtnActionPerformed
 
     private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
-        // TODO add your handling code here:
-        int confirmacion = JOptionPane.showConfirmDialog(this, "Deseas realizar la venta?");
-        
-        
-        if(confirmacion == JOptionPane.OK_OPTION){
-            if(Float.parseFloat(txtPago.getText())< total || "".equals(txtPago.getText())){
-            JOptionPane.showMessageDialog(this, "Ingrese un pago mayor al total de la venta");
-        } else {
-                
-                
+        // Verifica que haya productos en la lista antes de intentar realizar la venta
+        if (listaProductos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay productos en la lista. Agregue productos antes de realizar la venta.");
+            return;
+        }
 
-                    con.realizarVenta(Float.parseFloat(txtPago.getText()));
-                    JOptionPane.showMessageDialog(this, "Venta realizada exitosamente");
-                    listaProductos.clear();
-                    txtPago.setText("");
-                    txtCambio.setText(" CAMBIO $0.0");
-                    actualizarPantalla();
-               
-            
+        // Verifica que se haya ingresado un monto de pago
+        if (txtPago.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un monto de pago.");
+            return;
         }
-        }else{
-        
-             JOptionPane.showMessageDialog(this, "La venta fue Cancelada");
-             listaProductos.clear();
-                    txtPago.setText("");
-                    txtCambio.setText(" CAMBIO $0.0");
-                    actualizarPantalla();
+
+        try {
+            float montoPago = Float.parseFloat(txtPago.getText());
+
+            // Verifica que el monto de pago sea mayor o igual al total de la venta
+            if (montoPago < total) {
+                JOptionPane.showMessageDialog(this, "El monto de pago debe ser igual o mayor al total de la venta.");
+                return;
+            }
+
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Deseas realizar la venta?");
+
+            if (confirmacion == JOptionPane.OK_OPTION) {
+                con.realizarVenta(montoPago);
+                JOptionPane.showMessageDialog(this, "Venta realizada exitosamente");
+                listaProductos.clear();
+                txtPago.setText("");
+                txtCambio.setText(" CAMBIO $0.0");
+                actualizarPantalla();
+            } else {
+                JOptionPane.showMessageDialog(this, "La venta fue cancelada");
+                listaProductos.clear();
+                txtPago.setText("");
+                txtCambio.setText(" CAMBIO $0.0");
+                actualizarPantalla();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese un monto de pago válido.");
         }
-        
     }//GEN-LAST:event_btnPagarActionPerformed
 
     private void txtPagoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPagoKeyTyped
