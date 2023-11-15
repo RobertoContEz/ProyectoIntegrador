@@ -52,12 +52,6 @@
             <version>2.7.10</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>itson.isw</groupId>
-            <artifactId>puntoVentaNegocio</artifactId>
-            <version>1.0</version>
-            <type>jar</type>
-        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

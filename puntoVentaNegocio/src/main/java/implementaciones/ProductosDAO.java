@@ -63,7 +63,7 @@ public class ProductosDAO implements IProductosDAO {
         try {
             em= this.conexion.crearConexion();
             
-            String jpqlQuery = "SELECT p FROM Producto p WHERE p.nombre LIKE :nombreProducto";
+            String jpqlQuery = "SELECT p FROM Producto p WHERE p.nombre LIKE '%" + nombreProducto + "%'";
             //JOptionPane.showMessageDialog(null, jpqlQuery);
             // OBJETO DE CONSULTA EJECUTABLE
             TypedQuery<Producto> query = em.createQuery(jpqlQuery, Producto.class);
@@ -77,7 +77,6 @@ public class ProductosDAO implements IProductosDAO {
                 return query.getResultList().get(0);
                 
             }
-
             
         } catch (PersistenceException ex) {
             JOptionPane.showMessageDialog(null, "No se pudo acceder a la base de datos.");
