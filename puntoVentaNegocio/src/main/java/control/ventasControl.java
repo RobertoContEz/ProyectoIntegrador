@@ -12,7 +12,6 @@ import interfaces.IEmpleadosDAO;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public class ventasControl {
 
@@ -45,6 +44,12 @@ public class ventasControl {
     
     public Producto buscarProductoPorNombre(String nombre){
         Producto producto = productosDAO.consultarProductoPorNombre(nombre);
+        System.out.println("Producto : " + producto);
+        return producto;
+    }
+    
+    public Producto buscarProductoPorNumero(String codigo){
+        Producto producto = productosDAO.consultarProductoPorCodigo(codigo);
         System.out.println("Producto : " + producto);
         return producto;
     }

@@ -347,8 +347,8 @@ public class RegistrarVenta extends javax.swing.JFrame {
                     return;
                 }
 
-                if (cantidad > productoNuevo.getStock()) {
-                    JOptionPane.showMessageDialog(this, "La cantidad solicitada supera el stock disponible para el producto " + productoNuevo.getNombre() + ". Stock disponible: " + productoNuevo.getStock());
+                if (cantidad > productoNuevo.getExistencia()) {
+                    JOptionPane.showMessageDialog(this, "La cantidad solicitada supera el stock disponible para el producto " + productoNuevo.getNombre() + ". Stock disponible: " + (int)productoNuevo.getExistencia());
                     return;
                 }
 
