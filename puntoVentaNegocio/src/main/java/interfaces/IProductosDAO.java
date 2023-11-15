@@ -10,4 +10,5 @@ public interface IProductosDAO {
     public Producto consultarProductoPorNombre(String nombreProducto);
     public List<Producto> consultarProductosPorNombre(String nombreProducto);
     public List<Producto> consultarTodos();
+    public boolean actualizarProducto(Producto producto);
 }

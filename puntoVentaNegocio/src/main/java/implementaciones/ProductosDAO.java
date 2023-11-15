@@ -137,4 +137,32 @@ public class ProductosDAO implements IProductosDAO {
         }
     }
 
+    @Override
+    public boolean actualizarProducto(Producto producto) {
+    EntityManager em = null;
+
+    try {
+        em = this.conexion.crearConexion();
+        em.getTransaction().begin();
+        
+        // Verificar si el producto ya está gestionado por el EntityManager
+        if (!em.contains(producto)) {
+            producto = em.merge(producto); // Si no, realizar merge para gestionarlo
+        }
+        em.getTransaction().commit();
+        return true;
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(null, "No se pudo actualizar el producto");
+        System.err.println("No se pudo actualizar el producto: " + ex.getMessage());
+        if (em != null && em.getTransaction().isActive()) {
+            em.getTransaction().rollback(); // Deshacer la transacción en caso de error
+        }
+        return false;
+    } finally {
+        if (em != null) {
+            em.close(); // Cerrar el EntityManager en cualquier caso
+        }
+    }
+    }
+    
 }
