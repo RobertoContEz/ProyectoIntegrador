@@ -339,6 +339,12 @@ public class RegistrarVenta extends javax.swing.JFrame {
                     }
                 } else if (!txtNumProducto1.getText().trim().isEmpty()) {
                     productoNuevo = con.buscarProductoPorNumero(txtNumProducto1.getText());
+                    
+                    if(Integer.parseInt(txtCantidad.getText()) > (int)productoNuevo.getExistencia()){
+                        JOptionPane.showMessageDialog(this, "Excediste el stock. \n" 
+                                +"Stock actual: " + productoNuevo.getExistencia() + " Seleccionaste: " + txtCantidad.getText());
+                        return;
+                    }
 
                     if (productoNuevo == null) {
                         JOptionPane.showMessageDialog(this, "El producto con número " + txtNumProducto1.getText() + " no existe.");
