@@ -325,9 +325,8 @@ public class RegistrarVenta extends javax.swing.JFrame {
 
                 if (!txtNombreProducto.getText().trim().isEmpty()) {
                     productoNuevo = con.buscarProductoPorNombre(txtNombreProducto.getText());
-
                     if (productoNuevo == null) {
-                        JOptionPane.showMessageDialog(this, "El producto " + txtNombreProducto.getText() + " no existe.");
+                        
                         return;
                     }
                 } else if (!txtNumProducto1.getText().trim().isEmpty()) {

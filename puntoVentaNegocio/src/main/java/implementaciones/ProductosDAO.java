@@ -73,16 +73,18 @@ public class ProductosDAO implements IProductosDAO {
                 JOptionPane.showMessageDialog(null, "El producto" + nombreProducto + " no existe.");
                 return null;
             }else{
+                
                 return query.getResultList().get(0);
             }
             
         } catch (PersistenceException ex) {
+            
             JOptionPane.showMessageDialog(null, "No se pudo acceder a la base de datos.");
             System.err.println("No se pudo acceder a la base de datos"+ex.getMessage());
             return null;
         } catch (Exception ex) {
             
-             JOptionPane.showMessageDialog(null, "No se pudo conectar a la base de datos ");
+             JOptionPane.showMessageDialog(null, "El producto" + nombreProducto + " no existe.");
              System.err.println("No se pudo conectar a la base de datos  "+ex.getMessage());
               
              
