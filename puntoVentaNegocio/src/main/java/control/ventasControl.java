@@ -87,6 +87,10 @@ public class ventasControl {
     }
     
     public boolean realizarVenta(float pago){
+        
+        
+        
+        //Crea una nueva venta
         Venta venta = new Venta(
                                 new Date(), 
                                 total, 
@@ -99,6 +103,13 @@ public class ventasControl {
         
         try {
             ventasDAO.agregar(venta);
+            
+            //Reduce el stock de los productos seleccionados
+        Producto productoAux = null;
+            for (int i = 0; i < listaCompras.size(); i++) {
+                productoAux = buscarProductoPorNumero(listaCompras.get(i).getProducto().getCodigo());
+                productosDAO.actualizarStock(productoAux.getCodigo(), -(int)listaCompras.get(i).getCantidad());
+            }
         } catch (Exception e) {
             System.out.println("Error agregando la venta: "+e);
             return false;

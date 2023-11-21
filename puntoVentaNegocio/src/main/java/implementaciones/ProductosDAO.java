@@ -84,7 +84,7 @@ public class ProductosDAO implements IProductosDAO {
             return null;
         } catch (Exception ex) {
             
-             JOptionPane.showMessageDialog(null, "El producto" + nombreProducto + " no existe.");
+             JOptionPane.showMessageDialog(null, "El producto " + nombreProducto + " no existe.");
              System.err.println("No se pudo conectar a la base de datos  "+ex.getMessage());
               
              
@@ -171,25 +171,31 @@ public class ProductosDAO implements IProductosDAO {
     }
     @Override
     public void actualizarStock(String codigoProducto, int cantidad) {
+        
         EntityManager em = null;
         try {
             em = this.conexion.crearConexion();
             em.getTransaction().begin();
 
-            Producto producto = em.find(Producto.class, codigoProducto);
+            
+            Producto producto = consultarProductoPorCodigo(codigoProducto);
+            
+        
 
             if (producto != null) {
                 float stockActual = producto.getExistencia();
                 float nuevoStock = stockActual + cantidad;
 
                 //el nuevo stock no sea negativo
+                JOptionPane.showMessageDialog(null, nuevoStock);
                 if (nuevoStock >= 0) {
                     producto.setExistencia(nuevoStock); // Actualiza el stock en el objeto Producto
                     em.merge(producto); // Actualiza el producto en la base de datos
                     em.getTransaction().commit();
                     System.out.println("Stock actualizado para el producto con código " + codigoProducto);
                 } else {
-                    System.out.println("No se puede actualizar el stock a un valor negativo.");
+                    throw new Exception();
+                    //System.out.println("No se puede actualizar el stock a un valor negativo.");
                 }
             } else {
                 System.out.println("Producto con código " + codigoProducto + " no encontrado.");

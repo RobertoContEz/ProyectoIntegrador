@@ -322,9 +322,17 @@ public class RegistrarVenta extends javax.swing.JFrame {
                 }
 
                 Producto productoNuevo = null;
+               
 
                 if (!txtNombreProducto.getText().trim().isEmpty()) {
                     productoNuevo = con.buscarProductoPorNombre(txtNombreProducto.getText());
+                    if(Integer.parseInt(txtCantidad.getText()) > (int)productoNuevo.getExistencia()){
+                        JOptionPane.showMessageDialog(this, "Excediste el stock. \n" 
+                                +"Stock actual: " + productoNuevo.getExistencia() + " Seleccionaste: " + txtCantidad.getText());
+                    return;
+                }
+                    
+                    
                     if (productoNuevo == null) {
                         
                         return;
@@ -336,7 +344,7 @@ public class RegistrarVenta extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "El producto con número " + txtNumProducto1.getText() + " no existe.");
                         return;
                     }
-                } else {
+                }else {
                     JOptionPane.showMessageDialog(this, "Ingrese el nombre o número del producto.");
                     return;
                 }
@@ -398,6 +406,7 @@ public class RegistrarVenta extends javax.swing.JFrame {
 
             if (confirmacion == JOptionPane.OK_OPTION) {
                 con.realizarVenta(montoPago);
+                
                 JOptionPane.showMessageDialog(this, "Venta realizada exitosamente");
                 listaProductos.clear();
                 txtPago.setText("");
