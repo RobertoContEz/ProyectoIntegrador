@@ -187,7 +187,7 @@ public class ProductosDAO implements IProductosDAO {
                 float nuevoStock = stockActual + cantidad;
 
                 //el nuevo stock no sea negativo
-                JOptionPane.showMessageDialog(null, nuevoStock);
+                
                 if (nuevoStock >= 0) {
                     producto.setExistencia(nuevoStock); // Actualiza el stock en el objeto Producto
                     em.merge(producto); // Actualiza el producto en la base de datos
