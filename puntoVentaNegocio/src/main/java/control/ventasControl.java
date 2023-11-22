@@ -80,12 +80,12 @@ public class ventasControl {
     public float getTotal() {
         return total;
     }
-    
+
     public List<VentaProducto> vaciarListaCompras(){
         listaCompras.clear();
         return listaCompras;
     }
-    
+
     public boolean realizarVenta(float pago){
         
         
