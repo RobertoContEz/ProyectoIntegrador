@@ -72,19 +72,25 @@ public class ProductosForm extends javax.swing.JFrame {
         tblProductos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1197, 779));
 
-        btnVolver.setBackground(new java.awt.Color(169, 181, 255));
+        panelListaProductos.setBackground(new java.awt.Color(102, 153, 255));
+
+        btnVolver.setBackground(new java.awt.Color(231, 234, 255));
         btnVolver.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/inicio32.png"))); // NOI18N
         btnVolver.setText("VOLVER");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
 
         txtBusqueda.setToolTipText("");
 
         btnBuscar.setBackground(new java.awt.Color(220, 220, 220));
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/lupa32.png"))); // NOI18N
 
-        btnAgregar.setBackground(new java.awt.Color(117, 255, 117));
+        btnAgregar.setBackground(new java.awt.Color(153, 255, 153));
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/mas32.png"))); // NOI18N
         btnAgregar.setText("AGREGAR PRODUCTO");
@@ -197,40 +203,11 @@ public class ProductosForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ProductosForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ProductosForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ProductosForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ProductosForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ProductosForm().setVisible(true);
-            }
-        });
-    }
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        // TODO add your handling code here:
+        new Principal().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

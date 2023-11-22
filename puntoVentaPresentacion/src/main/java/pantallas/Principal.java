@@ -19,6 +19,7 @@ public class Principal extends javax.swing.JFrame {
         registrarVentaBtn = new javax.swing.JButton();
         salirBtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        gestionProductosBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Abarrotes Esmeralda");
@@ -49,6 +50,15 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/esmeralda32.png"))); // NOI18N
 
+        gestionProductosBtn.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        gestionProductosBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/producto.png"))); // NOI18N
+        gestionProductosBtn.setText("Productos");
+        gestionProductosBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gestionProductosBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -62,11 +72,13 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(174, 174, 174)
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(241, 241, 241)
-                        .addComponent(registrarVentaBtn))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(299, 299, 299)
-                        .addComponent(salirBtn)))
+                        .addComponent(salirBtn))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(241, 241, 241)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(registrarVentaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(gestionProductosBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(186, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -78,7 +90,9 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(60, 60, 60)
                 .addComponent(registrarVentaBtn)
-                .addGap(86, 86, 86)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(gestionProductosBtn)
+                .addGap(35, 35, 35)
                 .addComponent(salirBtn)
                 .addContainerGap(98, Short.MAX_VALUE))
         );
@@ -107,7 +121,14 @@ public class Principal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_salirBtnActionPerformed
 
+    private void gestionProductosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionProductosBtnActionPerformed
+        // TODO add your handling code here:
+        new ProductosForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_gestionProductosBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton gestionProductosBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
