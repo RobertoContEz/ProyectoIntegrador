@@ -20,6 +20,7 @@ public class Principal extends javax.swing.JFrame {
         salirBtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         gestionProductosBtn = new javax.swing.JButton();
+        generarReporteBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Abarrotes Esmeralda");
@@ -59,6 +60,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        generarReporteBtn.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        generarReporteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/documento32.png"))); // NOI18N
+        generarReporteBtn.setText("Generar Reporte");
+        generarReporteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generarReporteBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -72,13 +82,15 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(174, 174, 174)
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(299, 299, 299)
-                        .addComponent(salirBtn))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(241, 241, 241)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(registrarVentaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(gestionProductosBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(233, 233, 233)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(65, 65, 65)
+                                .addComponent(salirBtn))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(registrarVentaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(gestionProductosBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(generarReporteBtn)))))
                 .addContainerGap(186, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -88,13 +100,15 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addGap(60, 60, 60)
+                .addGap(33, 33, 33)
                 .addComponent(registrarVentaBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(gestionProductosBtn)
-                .addGap(35, 35, 35)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(generarReporteBtn)
+                .addGap(18, 18, 18)
                 .addComponent(salirBtn)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -127,7 +141,14 @@ public class Principal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_gestionProductosBtnActionPerformed
 
+    private void generarReporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarReporteBtnActionPerformed
+        // TODO add your handling code here:
+        new ReporteVenta().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_generarReporteBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton generarReporteBtn;
     private javax.swing.JButton gestionProductosBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

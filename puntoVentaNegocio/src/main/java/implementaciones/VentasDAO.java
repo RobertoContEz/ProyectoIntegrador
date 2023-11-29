@@ -8,8 +8,12 @@ import entidades.Venta;
 import interfaces.IConexionBD;
 import interfaces.IVentasDAO;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.swing.JOptionPane;
 
@@ -76,6 +80,25 @@ public class VentasDAO implements IVentasDAO{
             // OBJETO DE CONSULTA EJECUTABLE
             TypedQuery<Venta> query = em.createQuery(jpqlQuery, Venta.class);
 
+            return query.getResultList();
+        } catch (IllegalStateException ex) {
+            System.err.println("No se pudo encontrar la venta");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Venta> consultarVentasPorFecha(Calendar fechaInicio, Calendar fechaFin) {
+        try {
+            EntityManager em = this.conexion.crearConexion();
+            String jpqlQuery = "SELECT v FROM Venta v WHERE v.fecha BETWEEN :fechaInicio AND :fechaFin";
+
+            // OBJETO DE CONSULTA EJECUTABLE
+            TypedQuery<Venta> query = em.createQuery(jpqlQuery, Venta.class);
+            query.setParameter("fechaInicio", fechaInicio, TemporalType.TIMESTAMP);
+            query.setParameter("fechaFin", fechaFin, TemporalType.TIMESTAMP);
+            
             return query.getResultList();
         } catch (IllegalStateException ex) {
             System.err.println("No se pudo encontrar la venta");

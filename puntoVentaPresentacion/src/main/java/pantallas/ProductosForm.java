@@ -72,6 +72,7 @@ public class ProductosForm extends javax.swing.JFrame {
         tblProductos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(new ImageIcon(getClass().getResource("/iconos/esmeralda128.png")).getImage());
 
         panelListaProductos.setBackground(new java.awt.Color(102, 153, 255));
 
