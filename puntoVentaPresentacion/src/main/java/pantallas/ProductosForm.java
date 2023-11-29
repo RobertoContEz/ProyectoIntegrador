@@ -92,6 +92,11 @@ public class ProductosForm extends javax.swing.JFrame {
 
         btnBuscar.setBackground(new java.awt.Color(220, 220, 220));
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/lupa32.png"))); // NOI18N
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         btnAgregar.setBackground(new java.awt.Color(153, 255, 153));
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
@@ -226,6 +231,12 @@ public class ProductosForm extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+        listaProductos = con.buscarProductosPorNombreMarca(txtBusqueda.getText());
+        actualizarPantalla();
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

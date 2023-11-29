@@ -31,7 +31,40 @@ public class ProductosDAO implements IProductosDAO {
             return false;
         }
     }
+    
+    @Override
+    public boolean editar(Producto producto) {
+        EntityManager em = this.conexion.crearConexion();
 
+        try {
+            em.getTransaction().begin();
+
+            // Busca la entidad existente en la base de datos
+            Producto productoExistente = em.find(Producto.class, producto.getId());
+
+            if (productoExistente != null) {
+                productoExistente.setNombre(producto.getNombre());
+                productoExistente.setPrecio(producto.getPrecio());
+                productoExistente.setCodigo(producto.getCodigo());
+                productoExistente.setMarca(producto.getMarca());
+                productoExistente.setHabilitado(producto.getHabilitado());
+
+                // Guarda la entidad actualizada en la base de datos
+                em.merge(productoExistente);
+
+                em.getTransaction().commit();
+                return true;
+            } else {
+                // Manejo de error: la entidad no se encontró en la base de datos
+                return false;
+            }
+        } catch (IllegalStateException ex) {
+            System.err.println("No se pudo editar el producto");
+            ex.printStackTrace();
+            return false;
+        }
+    }
+    
     @Override
     public Producto consultarProductoPorCodigo(String codigoProducto, boolean habilitado) {
         EntityManager em =null;
@@ -100,11 +133,10 @@ public class ProductosDAO implements IProductosDAO {
         
         try {
             em = this.conexion.crearConexion();
-            String jpqlQuery = "SELECT p FROM Producto p WHERE p.nombre LIKE :nombreProducto%";
+            String jpqlQuery = "SELECT p FROM Producto p WHERE p.nombre LIKE '%" + nombreProducto + "%' OR p.marca LIKE '%"+nombreProducto+"%'";
 
             // OBJETO DE CONSULTA EJECUTABLE
             TypedQuery<Producto> query = em.createQuery(jpqlQuery, Producto.class);
-            query.setParameter("nombreProducto",  nombreProducto );
             
              if(query.getResultList()==null){
                 
@@ -211,5 +243,6 @@ public class ProductosDAO implements IProductosDAO {
             }
         }
     }
+
     
 }

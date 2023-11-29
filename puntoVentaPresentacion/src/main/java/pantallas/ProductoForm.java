@@ -19,12 +19,15 @@ public class ProductoForm extends javax.swing.JFrame {
 
     public static int AGREGAR_FORM = 1;
     public static int EDITAR_FORM = 2;
-    private int proceso;
-    private productosControl con;
+    private final int proceso;
+    private final productosControl con;
     private Producto producto;
 
     /**
      * Creates new form ProductoForm
+     * @param producto
+     * @param proceso
+     * @param con
      */
     public ProductoForm(Producto producto, int proceso, productosControl con) {
         initComponents();
@@ -39,6 +42,7 @@ public class ProductoForm extends javax.swing.JFrame {
             txtMarca.setText(producto.getMarca());
             txtNombre.setText(producto.getNombre());
             txtPrecio.setText(String.valueOf(producto.getPrecio()));
+            checkBoxHabilitado.setSelected(producto.getHabilitado());
         }
     }
 
@@ -143,6 +147,7 @@ public class ProductoForm extends javax.swing.JFrame {
         lblHabilitado.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblHabilitado.setText("HABILITADO");
 
+        checkBoxHabilitado.setSelected(true);
         checkBoxHabilitado.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         checkBoxHabilitado.setMaximumSize(new java.awt.Dimension(22, 22));
         checkBoxHabilitado.setMinimumSize(new java.awt.Dimension(22, 22));
@@ -217,7 +222,7 @@ public class ProductoForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblHabilitado)
                     .addComponent(checkBoxHabilitado, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(190, Short.MAX_VALUE))
+                .addContainerGap(178, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -228,7 +233,10 @@ public class ProductoForm extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -247,15 +255,17 @@ public class ProductoForm extends javax.swing.JFrame {
             if (confirmacion == JOptionPane.OK_OPTION) {
                 if(producto == null){
                     producto = new Producto(txtNombre.getText(), txtMarca.getText(), Float.parseFloat(txtPrecio.getText()), txtCodigo.getText(), Float.parseFloat(spinExistencia.getValue().toString()), checkBoxHabilitado.isSelected());
+                    con.agregarProducto(producto);
+                    JOptionPane.showMessageDialog(this, "Se agregó el producto satisfactoriamente");
                 } else {
                     producto.setCodigo(txtCodigo.getText());
                     producto.setMarca(txtMarca.getText());
                     producto.setNombre(txtNombre.getText());
                     producto.setPrecio(Float.parseFloat(txtPrecio.getText()));
                     producto.setHabilitado(checkBoxHabilitado.isSelected());
+                    con.editarProducto(producto);
+                    JOptionPane.showMessageDialog(this, "Se editó el producto satisfactoriamente");
                 }
-                con.agregarProducto(producto);
-                JOptionPane.showMessageDialog(this, "Se agregó el producto satisfactoriamente");
                 new ProductosForm().setVisible(true);
                 this.dispose();
             }

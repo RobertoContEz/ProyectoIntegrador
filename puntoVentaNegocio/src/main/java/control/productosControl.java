@@ -15,11 +15,33 @@ public class productosControl {
     }
     
     public List<Producto> buscarProductos(){
-        return productosDAO.consultarTodos();
+        List<Producto> productos = productosDAO.consultarTodos();
+        for (int i = 0; i < productos.size(); i++) {
+            if(productos.get(i).getHabilitado() == false){
+                productos.remove(i);
+                i--;
+            }
+        }
+        return productos;
+    }
+    
+    public List<Producto> buscarProductosPorNombreMarca(String nombre){
+        List<Producto> productos = productosDAO.consultarProductosPorNombre(nombre);
+        for (int i = 0; i < productos.size(); i++) {
+            if(productos.get(i).getHabilitado() == false){
+                productos.remove(i);
+                i--;
+            }
+        }
+        return productos;
     }
     
     public boolean agregarProducto(Producto producto){
         return productosDAO.agregar(producto);
+    }
+    
+    public boolean editarProducto(Producto producto){
+        return productosDAO.editar(producto);
     }
     
 }
