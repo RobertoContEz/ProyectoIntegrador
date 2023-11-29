@@ -33,16 +33,16 @@ public class ProductosDAO implements IProductosDAO {
     }
 
     @Override
-    public Producto consultarProductoPorCodigo(String codigoProducto) {
-         EntityManager em =null;
-         
+    public Producto consultarProductoPorCodigo(String codigoProducto, boolean habilitado) {
+        EntityManager em =null;
         try {
             em= this.conexion.crearConexion();
-            String jpqlQuery = "SELECT p FROM Producto p WHERE p.codigo LIKE :codigoProducto";
+            String jpqlQuery = "SELECT p FROM Producto p WHERE p.codigo LIKE :codigoProducto AND p.habilitado LIKE :habilitado";
 
             // OBJETO DE CONSULTA EJECUTABLE
             TypedQuery<Producto> query = em.createQuery(jpqlQuery, Producto.class);
             query.setParameter("codigoProducto",  codigoProducto );
+            query.setParameter("habilitado",  habilitado );
 
             return query.getResultList().get(0);
         } catch (PersistenceException ex) {
@@ -57,16 +57,17 @@ public class ProductosDAO implements IProductosDAO {
     }
     
     @Override
-    public Producto consultarProductoPorNombre(String nombreProducto) {
+    public Producto consultarProductoPorNombre(String nombreProducto, boolean habilitado) {
         
         EntityManager em = null;
         try {
             em= this.conexion.crearConexion();
             
-            String jpqlQuery = "SELECT p FROM Producto p WHERE p.nombre LIKE '%" + nombreProducto + "%'";
+            String jpqlQuery = "SELECT p FROM Producto p WHERE p.nombre LIKE '%" + nombreProducto + "%' OR p.marca LIKE '%" + nombreProducto + "%' AND p.habilitado LIKE :habilitado";
             //JOptionPane.showMessageDialog(null, jpqlQuery);
             // OBJETO DE CONSULTA EJECUTABLE
             TypedQuery<Producto> query = em.createQuery(jpqlQuery, Producto.class);
+            query.setParameter("habilitado",  habilitado );
             //JOptionPane.showMessageDialog(null, query.toString());
             if(query.getResultList().get(0)==null){
                 
@@ -178,7 +179,7 @@ public class ProductosDAO implements IProductosDAO {
             em.getTransaction().begin();
 
             
-            Producto producto = consultarProductoPorCodigo(codigoProducto);
+            Producto producto = consultarProductoPorCodigo(codigoProducto, true);
             
         
 

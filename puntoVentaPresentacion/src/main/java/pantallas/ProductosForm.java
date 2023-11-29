@@ -13,6 +13,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Maste
@@ -21,7 +22,9 @@ public class ProductosForm extends javax.swing.JFrame {
 
     private List<Producto> listaProductos = new ArrayList<>();
     private productosControl con = new productosControl();
-    
+
+    private int columna, row;
+
     /**
      * Creates new form ProductosForm
      */
@@ -32,14 +35,14 @@ public class ProductosForm extends javax.swing.JFrame {
         actualizarPantalla();
     }
 
-    private void buscarProductos(){
+    private void buscarProductos() {
         listaProductos = con.buscarProductos();
     }
-    
-    private void actualizarPantalla(){
-        DefaultTableModel modeloTabla = (DefaultTableModel)this.tblProductos.getModel();
+
+    private void actualizarPantalla() {
+        DefaultTableModel modeloTabla = (DefaultTableModel) this.tblProductos.getModel();
         modeloTabla.setRowCount(0);
-        
+
         for (Producto producto : listaProductos) {
             Object[] fila = new Object[7];
             fila[0] = producto.getCodigo();
@@ -47,13 +50,11 @@ public class ProductosForm extends javax.swing.JFrame {
             fila[2] = producto.getNombre();
             fila[3] = producto.getPrecio();
             fila[4] = producto.getExistencia();
-            fila[5] = new JButton(new ImageIcon("src/main/resources/iconos/lapiz.png"));
-            fila[6] = new JButton(new ImageIcon("src/main/resources/iconos/basura.png"));
             modeloTabla.addRow(fila);
         }
         tblProductos.setModel(modeloTabla);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,6 +71,7 @@ public class ProductosForm extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProductos = new javax.swing.JTable();
+        btnEditar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImage(new ImageIcon(getClass().getResource("/iconos/esmeralda128.png")).getImage());
@@ -101,23 +103,23 @@ public class ProductosForm extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.setBackground(new java.awt.Color(102, 153, 255));
+
+        tblProductos.setBackground(new java.awt.Color(236, 236, 236));
         tblProductos.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         tblProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Codigo", "Marca", "Nombre", "Precio", "Existencias", "", ""
+                "Codigo", "Marca", "Nombre", "Precio", "Existencias"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -141,11 +143,15 @@ public class ProductosForm extends javax.swing.JFrame {
             tblProductos.getColumnModel().getColumn(3).setPreferredWidth(75);
             tblProductos.getColumnModel().getColumn(4).setResizable(false);
             tblProductos.getColumnModel().getColumn(4).setPreferredWidth(75);
-            tblProductos.getColumnModel().getColumn(5).setResizable(false);
-            tblProductos.getColumnModel().getColumn(5).setPreferredWidth(1);
-            tblProductos.getColumnModel().getColumn(6).setResizable(false);
-            tblProductos.getColumnModel().getColumn(6).setPreferredWidth(1);
         }
+
+        btnEditar.setBackground(new java.awt.Color(255, 177, 100));
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/lapiz.png"))); // NOI18N
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelListaProductosLayout = new javax.swing.GroupLayout(panelListaProductos);
         panelListaProductos.setLayout(panelListaProductosLayout);
@@ -157,11 +163,13 @@ public class ProductosForm extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(panelListaProductosLayout.createSequentialGroup()
                         .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(txtBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(85, 85, 85)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -171,10 +179,11 @@ public class ProductosForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelListaProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
                     .addComponent(txtBusqueda)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5)
+                    .addComponent(btnVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(4, 4, 4)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -191,7 +200,7 @@ public class ProductosForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelListaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
@@ -200,7 +209,7 @@ public class ProductosForm extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        new ProductoForm(null).setVisible(true);
+        new ProductoForm(null, ProductoForm.AGREGAR_FORM, con).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -210,9 +219,18 @@ public class ProductosForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        if (tblProductos.getSelectedRow() != -1) {
+            new ProductoForm(listaProductos.get(tblProductos.getSelectedRow()), ProductoForm.EDITAR_FORM, con).setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnVolver;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelListaProductos;

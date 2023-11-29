@@ -37,6 +37,9 @@ public class Producto implements Serializable {
     @Column(name="existencia", nullable=false)
     private float existencia;
     
+    @Column(name="habilitado", nullable=false)
+    private boolean habilitado;
+    
     @OneToMany(cascade=CascadeType.ALL, mappedBy="producto")
     private List<VentaProducto> ventasProducto;
     
@@ -46,30 +49,33 @@ public class Producto implements Serializable {
     public Producto() {
     }
 
-    public Producto(String nombre, String marca, float precio, String codigo, float existencia) {
+    public Producto(String nombre, String marca, float precio, String codigo, float existencia, boolean habilitado) {
         this.nombre = nombre;
         this.marca = marca;
         this.precio = precio;
         this.codigo = codigo;
         this.existencia = existencia;
+        this.habilitado = habilitado;
     }
     
-    public Producto(Long id, String nombre, String marca, float precio, String codigo, float existencia) {
+    public Producto(Long id, String nombre, String marca, float precio, String codigo, float existencia, boolean habilitado) {
         this.id = id;
         this.nombre = nombre;
         this.marca = marca;
         this.precio = precio;
         this.codigo = codigo;
         this.existencia = existencia;
+        this.habilitado = habilitado;
     }
 
-    public Producto(Long id, String nombre, String marca, float precio, String codigo, float existencia, List<VentaProducto> ventasProducto, List<CompraProducto> comprasProducto) {
+    public Producto(Long id, String nombre, String marca, float precio, String codigo, float existencia, boolean habilitado, List<VentaProducto> ventasProducto, List<CompraProducto> comprasProducto) {
         this.id = id;
         this.nombre = nombre;
         this.marca = marca;
         this.precio = precio;
         this.codigo = codigo;
         this.existencia = existencia;
+        this.habilitado = habilitado;
         this.ventasProducto = ventasProducto;
         this.comprasProducto = comprasProducto;
     }
@@ -122,6 +128,14 @@ public class Producto implements Serializable {
         this.existencia = existencia;
     }
 
+    public boolean getHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
+    }
+
     public List<VentaProducto> getVentasProducto() {
         return ventasProducto;
     }
@@ -162,6 +176,6 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", marca=" + marca + ", precio=" + precio + ", codigo=" + codigo + ", existencia=" + existencia + '}';
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", marca=" + marca + ", precio=" + precio + ", codigo=" + codigo + ", existencia=" + existencia + ", habilitado=" + habilitado + '}';
     }
 }

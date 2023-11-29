@@ -18,4 +18,8 @@ public class productosControl {
         return productosDAO.consultarTodos();
     }
     
+    public boolean agregarProducto(Producto producto){
+        return productosDAO.agregar(producto);
+    }
+    
 }

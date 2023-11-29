@@ -4,7 +4,12 @@
  */
 package pantallas;
 
+import control.productosControl;
 import entidades.Producto;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -12,11 +17,43 @@ import entidades.Producto;
  */
 public class ProductoForm extends javax.swing.JFrame {
 
+    public static int AGREGAR_FORM = 1;
+    public static int EDITAR_FORM = 2;
+    private int proceso;
+    private productosControl con;
+    private Producto producto;
+
     /**
      * Creates new form ProductoForm
      */
-    public ProductoForm(Producto producto) {
+    public ProductoForm(Producto producto, int proceso, productosControl con) {
         initComponents();
+        this.proceso = proceso;
+        this.con = con;
+        this.producto = producto;
+        if (proceso == EDITAR_FORM) {
+            lblExistencia.setVisible(false);
+            spinExistencia.setVisible(false);
+            btnAgregar.setText("Actualizar Producto");
+            txtCodigo.setText(producto.getCodigo());
+            txtMarca.setText(producto.getMarca());
+            txtNombre.setText(producto.getNombre());
+            txtPrecio.setText(String.valueOf(producto.getPrecio()));
+        }
+    }
+
+    public boolean ValidarCamposLlenos() {
+        List<JTextField> campos = new ArrayList<>();
+        campos.add(txtCodigo);
+        campos.add(txtMarca);
+        campos.add(txtNombre);
+        campos.add(txtPrecio);
+        for (JTextField campo : campos) {
+            if (campo.getText().equals("")) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -31,17 +68,19 @@ public class ProductoForm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         btnVolver = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        lblMarca = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblExistencia = new javax.swing.JLabel();
+        txtMarca = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtPrecio = new javax.swing.JTextField();
+        lblPrecio = new javax.swing.JLabel();
+        lblCodigo = new javax.swing.JLabel();
+        txtCodigo = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        spinExistencia = new javax.swing.JSpinner();
+        lblHabilitado = new javax.swing.JLabel();
+        checkBoxHabilitado = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,33 +106,47 @@ public class ProductoForm extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("MARCA");
+        lblMarca.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblMarca.setText("MARCA");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("NOMBRE");
+        lblNombre.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblNombre.setText("NOMBRE");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("EXISTENCIA");
+        lblExistencia.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblExistencia.setText("EXISTENCIA");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtMarca.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtNombre.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtPrecio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyTyped(evt);
+            }
+        });
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel4.setText("PRECIO");
+        lblPrecio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblPrecio.setText("PRECIO");
 
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblCodigo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblCodigo.setText("CODIGO");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel5.setText("CODIGO");
-
-        jTextField5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtCodigo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel6.setText("DATOS DEL PRODUCTO");
+
+        spinExistencia.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        spinExistencia.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
+        lblHabilitado.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblHabilitado.setText("HABILITADO");
+
+        checkBoxHabilitado.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        checkBoxHabilitado.setMaximumSize(new java.awt.Dimension(22, 22));
+        checkBoxHabilitado.setMinimumSize(new java.awt.Dimension(22, 22));
+        checkBoxHabilitado.setPreferredSize(new java.awt.Dimension(22, 22));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -105,29 +158,30 @@ public class ProductoForm extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(402, 402, 402)
                         .addComponent(jLabel6)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 315, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(0, 307, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblHabilitado)
+                    .addComponent(lblMarca)
+                    .addComponent(lblNombre)
+                    .addComponent(lblPrecio)
+                    .addComponent(lblExistencia)
+                    .addComponent(lblCodigo))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)))
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtMarca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkBoxHabilitado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(217, 217, 217))
         );
         jPanel1Layout.setVerticalGroup(
@@ -141,25 +195,29 @@ public class ProductoForm extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addGap(53, 53, 53)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblCodigo)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblMarca))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombre))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPrecio))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addContainerGap(233, Short.MAX_VALUE))
+                    .addComponent(lblExistencia)
+                    .addComponent(spinExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblHabilitado)
+                    .addComponent(checkBoxHabilitado, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(190, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -179,6 +237,31 @@ public class ProductoForm extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
+        if (ValidarCamposLlenos() == true) {
+            int confirmacion;
+            if (proceso == AGREGAR_FORM) {
+                confirmacion = JOptionPane.showConfirmDialog(this, "Deseas registrar el producto?");
+            } else {
+                confirmacion = JOptionPane.showConfirmDialog(this, "Deseas actualizar el producto?");
+            }
+            if (confirmacion == JOptionPane.OK_OPTION) {
+                if(producto == null){
+                    producto = new Producto(txtNombre.getText(), txtMarca.getText(), Float.parseFloat(txtPrecio.getText()), txtCodigo.getText(), Float.parseFloat(spinExistencia.getValue().toString()), checkBoxHabilitado.isSelected());
+                } else {
+                    producto.setCodigo(txtCodigo.getText());
+                    producto.setMarca(txtMarca.getText());
+                    producto.setNombre(txtNombre.getText());
+                    producto.setPrecio(Float.parseFloat(txtPrecio.getText()));
+                    producto.setHabilitado(checkBoxHabilitado.isSelected());
+                }
+                con.agregarProducto(producto);
+                JOptionPane.showMessageDialog(this, "Se agregó el producto satisfactoriamente");
+                new ProductosForm().setVisible(true);
+                this.dispose();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Favor de llenar todos los campos");
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
@@ -187,20 +270,35 @@ public class ProductoForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
+    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+        // TODO add your handling code here:
+        if (!Character.isDigit(evt.getKeyChar())) {
+            if (!".".equals(String.valueOf(evt.getKeyChar()))) {
+                evt.consume();
+            } else {
+                if (txtPrecio.getText().contains(".") || txtPrecio.getText().isEmpty()) {
+                    evt.consume();
+                }
+            }
+        }
+    }//GEN-LAST:event_txtPrecioKeyTyped
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnVolver;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JCheckBox checkBoxHabilitado;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JLabel lblCodigo;
+    private javax.swing.JLabel lblExistencia;
+    private javax.swing.JLabel lblHabilitado;
+    private javax.swing.JLabel lblMarca;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblPrecio;
+    private javax.swing.JSpinner spinExistencia;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtMarca;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 }

@@ -33,7 +33,7 @@ public class ventasControl {
     }
 
     public  List<VentaProducto> borrarProductoVenta(String nombreProducto){
-        Producto producto = productosDAO.consultarProductoPorNombre(nombreProducto);
+        Producto producto = productosDAO.consultarProductoPorNombre(nombreProducto, true);
         for (int i = 0; i < listaCompras.size() ; i++) {
             if(listaCompras.get(i).getProducto() == producto){
                 listaCompras.remove(i);
@@ -43,19 +43,19 @@ public class ventasControl {
     }
     
     public Producto buscarProductoPorNombre(String nombre){
-        Producto producto = productosDAO.consultarProductoPorNombre(nombre);
+        Producto producto = productosDAO.consultarProductoPorNombre(nombre, true);
         System.out.println("Producto : " + producto);
         return producto;
     }
     
     public Producto buscarProductoPorNumero(String codigo){
-        Producto producto = productosDAO.consultarProductoPorCodigo(codigo);
+        Producto producto = productosDAO.consultarProductoPorCodigo(codigo, true);
         System.out.println("Producto : " + producto);
         return producto;
     }
     
     public List<VentaProducto> agregarProductoVenta(String codigoProducto, int cantidad){
-        Producto producto = productosDAO.consultarProductoPorCodigo(codigoProducto);
+        Producto producto = productosDAO.consultarProductoPorCodigo(codigoProducto, true);
         boolean existente = false;
         for (int i = 0; i < listaCompras.size() ; i++) {
             if(producto.equals(listaCompras.get(i).getProducto())){
