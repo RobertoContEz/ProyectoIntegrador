@@ -1,7 +1,6 @@
 
 package pantallas;
 
-import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 
 public class Principal extends javax.swing.JFrame {
