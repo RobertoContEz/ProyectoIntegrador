@@ -75,7 +75,7 @@ public class ProductosDAO implements IProductosDAO {
             // OBJETO DE CONSULTA EJECUTABLE
             TypedQuery<Producto> query = em.createQuery(jpqlQuery, Producto.class);
             query.setParameter("codigoProducto",  codigoProducto );
-            query.setParameter("habilitado",  habilitado );
+            query.setParameter("habilitado",  (habilitado?"1":"0") );
 
             return query.getResultList().get(0);
         } catch (PersistenceException ex) {
@@ -100,7 +100,7 @@ public class ProductosDAO implements IProductosDAO {
             //JOptionPane.showMessageDialog(null, jpqlQuery);
             // OBJETO DE CONSULTA EJECUTABLE
             TypedQuery<Producto> query = em.createQuery(jpqlQuery, Producto.class);
-            query.setParameter("habilitado",  habilitado );
+            query.setParameter("habilitado",  (habilitado?"1":"0") );
             //JOptionPane.showMessageDialog(null, query.toString());
             if(query.getResultList().get(0)==null){
                 

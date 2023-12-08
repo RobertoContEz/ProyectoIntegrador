@@ -39,7 +39,7 @@ public class reportesControl {
             document.open();
             
             for (Venta venta : ventas) {
-                String reporte = "Venta ID: "+venta.getId()+"\n"
+                String reporte = "\nVenta ID: "+venta.getId()+"\n"
                         + "Fecha: "+convertirFecha(venta.getFecha())+"\n"
                         + "Vendedor: "+venta.getEmpleado().getNombre()+"\n"
                         + "Productos:\n";
