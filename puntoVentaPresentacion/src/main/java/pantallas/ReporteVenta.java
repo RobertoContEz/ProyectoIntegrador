@@ -5,6 +5,7 @@ import control.reportesControl;
 import entidades.Venta;
 import entidades.VentaProducto;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -26,14 +27,15 @@ public class ReporteVenta extends javax.swing.JFrame {
         
         for (Venta venta : ventas) {
             Object[] fila = new Object[4];
-            fila[0] = venta.getFecha();
+            fila[0] = con.convertirFecha(venta.getFecha());
             fila[2] = venta.getEmpleado().getNombre();
-            fila[3] = "$"+venta.getTotal();
+            fila[3] = "$"+con.formatearMonto(venta.getTotal());
             
             List<VentaProducto> productos = venta.getProductosVenta();
             String campoProductos = "";
             for (VentaProducto producto : productos) {
-                campoProductos += producto.getProducto().getNombre() +" "+producto.getCantidad()+", ";
+                campoProductos += producto.getProducto().getNombre() 
+                        +" "+con.formatearCantidad(producto.getCantidad())+", ";
             }
             campoProductos = campoProductos.substring(0, campoProductos.length()-2)+".";
             
@@ -57,7 +59,7 @@ public class ReporteVenta extends javax.swing.JFrame {
         txtFechaFin = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaVentas = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        guardarBtn = new javax.swing.JButton();
         generarBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -95,13 +97,13 @@ public class ReporteVenta extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaVentas);
 
-        jButton1.setBackground(new java.awt.Color(255, 0, 0));
-        jButton1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/pdf32.png"))); // NOI18N
-        jButton1.setText("Guardar PDF");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        guardarBtn.setBackground(new java.awt.Color(255, 0, 0));
+        guardarBtn.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        guardarBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/pdf32.png"))); // NOI18N
+        guardarBtn.setText("Guardar PDF");
+        guardarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                guardarBtnActionPerformed(evt);
             }
         });
 
@@ -136,7 +138,7 @@ public class ReporteVenta extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                         .addComponent(generarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(guardarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -161,7 +163,7 @@ public class ReporteVenta extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                .addComponent(guardarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -190,30 +192,42 @@ public class ReporteVenta extends javax.swing.JFrame {
         String fechaInicio = txtFechaInicio.getText();
         String fechaFin = txtFechaFin.getText();
         
-        ventas = con.buscarVentasReporte(con.convertirFecha(fechaInicio),
-                con.convertirFecha(fechaFin));
+        if(!con.validarFecha(fechaInicio)) return;
+        if(!con.validarFecha(fechaFin)) return;
         
+        Calendar fi = con.convertirFecha(fechaInicio);
+        Calendar ff = con.convertirFecha(fechaFin);
+        
+        if(!con.validarFechas(fi,ff)) return;
+        
+        List<Venta> ventas = con.buscarVentasReporte(fi, ff);
+        
+        if(ventas == null || ventas.isEmpty()) {
+            return;
+        }
+        
+        this.ventas = ventas;
         actualizarPantalla();
         
     }//GEN-LAST:event_generarBtnActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void guardarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtnActionPerformed
         // TODO add your handling code here:
         try {
             String nombre = "reporte"+txtFechaInicio.getText()+"-"+txtFechaFin.getText();
             con.guardarReporte(ventas, nombre.replace("/", ""));
             
-            JOptionPane.showMessageDialog(this, "Se ha guardado el reporte con exito.");
+            JOptionPane.showMessageDialog(this, "Se ha guardado el reporte con éxito.");
         } catch(Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "No se pudo guardar el reporte.");
+            JOptionPane.showMessageDialog(this, "No se ha podido guardar el reporte.");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_guardarBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton generarBtn;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton guardarBtn;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
